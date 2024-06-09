@@ -5,18 +5,13 @@ const cors = require('cors');
 const app = express();
 const PORT = 8000
 
-// Configura CORS
 app.use(cors({
-    origin: 'https://world-clock-six.vercel.app', // Reemplaza con el dominio de tu frontend
-    methods: 'GET' // Permite solo métodos GET
+    origin: 'https://world-clock-six.vercel.app', 
+    methods: 'GET'
 }));
 
 app.get('/', (req, res) => {
   res.send('Hello World from this side')
-});
-
-app.get('/about', (req, res) => {
-  res.send('About route 🎉 ')
 });
 
 app.get('/current-time', async (req, res) => {
