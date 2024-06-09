@@ -7,7 +7,7 @@ const PORT = 8000
 
 // Configura CORS
 app.use(cors({
-    origin: 'https://world-clock-six.vercel.app/', // Reemplaza con el dominio de tu frontend
+    origin: 'https://world-clock-six.vercel.app', // Reemplaza con el dominio de tu frontend
     methods: 'GET' // Permite solo métodos GET
 }));
 
