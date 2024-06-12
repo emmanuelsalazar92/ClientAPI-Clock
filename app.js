@@ -1,17 +1,63 @@
 const express = require('express');
+require('dotenv').config();
 const axios = require('axios');
 const cors = require('cors');
+const { setPolyfills } = require("@growthbook/growthbook");
+const { GrowthBook } = require("@growthbook/growthbook");
 
 const app = express();
-const PORT = 8000
+const PORT = 8000;
+const KEY = process.env.clientKey;
 
-app.use(cors({
-    origin: 'https://world-clock-six.vercel.app', 
-    methods: 'GET'
-}));
+console.log(KEY);
+
+
+setPolyfills({
+  // Required for Node 17 or earlier
+  fetch: require("cross-fetch"),undefined
+});
+
+app.use(function(req, res, next) {
+    // Create a GrowthBook Context
+    req.growthbook = new GrowthBook({
+      apiHost: "https://cdn.growthbook.io",
+      clientKey: KEY,
+      trackingCallback: (experiment, result) => {
+        // TODO: Use your real analytics tracking system
+        console.log("Viewed Experiment", {
+          experimentId: experiment.key,
+          variationId: result.key
+        });
+      }
+    });
+  
+    // Clean up at the end of the request
+    res.on('close', () => req.growthbook.destroy());
+  
+    // Wait for features to load (will be cached in-memory for future requests)
+    req.growthbook.init({ timeout: 1000 })
+      .then(() => next())
+  });
+
+// Middleware personalizado para configurar CORS dinámicamente
+const dynamicCors = (req, res, next) => {
+    if (req.growthbook.isOn("TestingMode")) {
+        cors({ origin: 'https://world-clock-six.vercel.app', methods: 'GET' })(req, res, next);
+    } else {
+        cors()(req, res, next); // Permitir todas las rutas CORS
+    }
+};
+
+// Usar el middleware dinámico antes de definir las rutas
+app.use(dynamicCors);
 
 app.get('/', (req, res) => {
-  res.send('Hello World from this side')
+    if (req.growthbook.isOn("TestingMode")) {
+        res.send("Modo Testing ACTIVO");
+      }
+      else {
+        res.send("Modo Testing INACTIVO");
+      }
 });
 
 app.get('/current-time', async (req, res) => {
