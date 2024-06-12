@@ -68,8 +68,6 @@ console.log(result.ruleId);
 // Information about the experiment (if any) which was used
 console.log(result.experiment);
 
-// The result of the experiment (or `undefined`)
-console.log(result.experimentResult);
 
     if (req.growthbook.isOn("TestingMode")) {
         res.send("Modo Testing ACTIVO");
