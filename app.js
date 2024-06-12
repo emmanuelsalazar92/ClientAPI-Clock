@@ -9,7 +9,7 @@ const app = express();
 const PORT = 8000;
 const KEY = process.env.clientKey;
 
-console.log(KEY);
+console.log("\nTHIS IS THE KEY: " + KEY + " END.\n");
 
 
 setPolyfills({
