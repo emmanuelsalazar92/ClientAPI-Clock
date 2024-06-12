@@ -42,9 +42,9 @@ app.use(function(req, res, next) {
 // Middleware personalizado para configurar CORS dinámicamente
 const dynamicCors = (req, res, next) => {
     if (req.growthbook.isOn("TestingMode")) {
-        cors({ origin: 'https://world-clock-six.vercel.app', methods: 'GET' })(req, res, next);
-    } else {
         cors()(req, res, next); // Permitir todas las rutas CORS
+    } else {
+        cors({ origin: 'https://world-clock-six.vercel.app', methods: 'GET' })(req, res, next);
     }
 };
 
@@ -52,6 +52,25 @@ const dynamicCors = (req, res, next) => {
 app.use(dynamicCors);
 
 app.get('/', (req, res) => {
+// Get detailed information about the feature evaluation
+const result = req.growthbook.evalFeature("TestingMode");
+
+// The value of the feature (or `null` if not defined)
+console.log(result.value);
+
+// Why the value was assigned to the user
+// One of: `override`, `unknownFeature`, `defaultValue`, `force`, or `experiment`
+console.log(result.source);
+
+// The string id of the rule (if any) which was used
+console.log(result.ruleId);
+
+// Information about the experiment (if any) which was used
+console.log(result.experiment);
+
+// The result of the experiment (or `undefined`)
+console.log(result.experimentResult);
+
     if (req.growthbook.isOn("TestingMode")) {
         res.send("Modo Testing ACTIVO");
       }
