@@ -42,10 +42,10 @@ app.get("/", (req, res) => {
 
   // Boolean on/off flag
   if (gb.isOn("TestingMode")) {
-    res.send("Modo Testing ACTIVO");
+    res.send("Modo Testing ACTIVO " + process.env.clientKey);
   }
   else {
-    res.send("Modo Testing INACTIVO");
+    res.send("Modo Testing INACTIVO " + process.env.clientKey);
   }
 })
 
