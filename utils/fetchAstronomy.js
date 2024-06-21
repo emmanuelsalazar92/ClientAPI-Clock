@@ -1,4 +1,5 @@
 const axios = require('axios');
+const getCurrentDateFormatted = require('./currentDate.js');
 
 const fetchAstronomy = async (query) => {
   const key = process.env.weatherKey;
