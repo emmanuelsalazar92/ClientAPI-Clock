@@ -9,7 +9,12 @@
     ],
     "routes": [
      {
-      "src": "/(.*)",
+        "src": "/(.*)",
+        "headers": {
+          "Access-Control-Allow-Origin": "https://weather-clockzones-staging.vercel.app",
+          "Access-Control-Allow-Methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+          "Access-Control-Allow-Headers": "Content-Type"
+        },
       "dest": "server.js"
      }
     ]
